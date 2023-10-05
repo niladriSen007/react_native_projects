@@ -1,4 +1,4 @@
-import { View, Text} from "react-native";
+import { View, Text, Alert } from "react-native";
 import React, { useState } from "react";
 import tw from "twrnc";
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,6 +9,24 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    setLoading(true);
+    try {
+      if (!name || !email || !password) {
+        Alert.alert("Please fill all the details");
+        setLoading(false);
+        return;
+      }
+      console.log(name);
+      Alert.alert("Success", "You have successfully registered");
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
+  };
 
   return (
     <LinearGradient
@@ -47,7 +65,11 @@ const Register = () => {
             setValue={setPassword}
           />
         </View>
-      <ButtonNew />
+        <ButtonNew
+          title={"Submit"}
+          handleSubmit={handleSubmit}
+          loading={loading}
+        />
       </View>
       {/* </View> */}
     </LinearGradient>
