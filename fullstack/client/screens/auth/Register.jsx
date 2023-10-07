@@ -4,6 +4,7 @@ import tw from "twrnc";
 import { LinearGradient } from "expo-linear-gradient";
 import InputField from "../../components/Forms/InputField";
 import ButtonNew from "../../components/Forms/ButtonNew";
+import { Link } from "@react-navigation/native";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -38,7 +39,7 @@ const Register = () => {
       {/* <View style={tw`bg-slate-900 flex-1 items-center justify-center`}> */}
       {/* <Text>Register123</Text> */}
       <View
-        style={tw`w-full bg-white h-[480px] rounded-t-3xl absolute bottom-0 flex-1 items-center justify-center`}
+        style={tw`w-full bg-white h-[500px] rounded-t-3xl absolute bottom-0 flex-1 items-center justify-center`}
       >
         <Text style={tw`text-5xl font-extrabold text-blue-600 `}>SKOUT</Text>
         <View style={tw`px-4 items-center justify-center flex pt-8 pb-4`}>
@@ -66,10 +67,15 @@ const Register = () => {
           />
         </View>
         <ButtonNew
-          title={"Submit"}
+          title={"Register"}
           handleSubmit={handleSubmit}
           loading={loading}
         />
+        <Link to={{screen:"login"}} style={tw`py-3 pb-4`}>
+          <Text style={tw`text-blue-500  underline text-lg`}>
+            Already have an account ?
+          </Text>
+        </Link>
       </View>
       {/* </View> */}
     </LinearGradient>
