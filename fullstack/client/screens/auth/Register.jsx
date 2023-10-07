@@ -4,7 +4,9 @@ import tw from "twrnc";
 import { LinearGradient } from "expo-linear-gradient";
 import InputField from "../../components/Forms/InputField";
 import ButtonNew from "../../components/Forms/ButtonNew";
-import { Link } from "@react-navigation/native";
+import { Link, useNavigation } from "@react-navigation/native";
+import axios from "axios"
+const URL = "http://192.168.0.161:5000"
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -12,7 +14,9 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const navigation = useNavigation()
+
+  const handleSubmit = async() => {
     setLoading(true);
     try {
       if (!name || !email || !password) {
@@ -20,12 +24,15 @@ const Register = () => {
         setLoading(false);
         return;
       }
-      console.log(name);
+      // console.log(name);
+      const res = await axios.post(`${URL}/auth/register`,{name,email,password})
+      console.log(res?.data)
       Alert.alert("Success", "You have successfully registered");
+      navigation.navigate("login",{screen : "login"})
       setLoading(false);
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      console.log("Error: "+ e);
     }
   };
 

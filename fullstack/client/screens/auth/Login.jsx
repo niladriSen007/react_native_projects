@@ -1,17 +1,33 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import { LinearGradient } from "expo-linear-gradient";
 import InputField from "../../components/Forms/InputField";
 import ButtonNew from "../../components/Forms/ButtonNew";
-import { Link } from "@react-navigation/native";
+import { Link, useNavigation } from "@react-navigation/native";
+import axios from "axios";
+const URL = "http://192.168.0.161:5000"
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const navigation = useNavigation()
+
+  const showLocalStorageData = async() =>{
+    const data = await AsyncStorage.getItem("@auth");
+    console.log(data)
+  }
+
+  useEffect(()=>{
+    showLocalStorageData()
+  },[])
+
+  const handleSubmit = async() => {
+    
     setLoading(true);
     try {
       if (!email || !password) {
@@ -19,8 +35,12 @@ const Login = () => {
         setLoading(false);
         return;
       }
-      console.log(name);
-      Alert.alert("Success", "You have successfully registered");
+      const res = await axios.post(`${URL}/auth/register`,{email,password})
+      console.log(res?.data)
+      await AsyncStorage.setItem('@auth', JSON.stringify(res?.data));
+      navigation.navigate("home",{screen : "home"})
+      // Alert.alert("Success", "You have successfully registered");
+
       setLoading(false);
     } catch (e) {
       setLoading(false);
