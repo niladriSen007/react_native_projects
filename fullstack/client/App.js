@@ -4,11 +4,14 @@ import Register from "./screens/auth/Register";
 import Login from "./screens/auth/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import NavigationController from "./Navigation/NavigationController";
+import { AuthProvider } from "./context/authContext";
 
 export default function App() {
   return (
     <NavigationContainer>
-      <NavigationController />
+      <AuthProvider>
+        <NavigationController />
+      </AuthProvider>
     </NavigationContainer>
   );
 }
