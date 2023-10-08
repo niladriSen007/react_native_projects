@@ -1,12 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Alert } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import tw from "twrnc";
 import { LinearGradient } from "expo-linear-gradient";
 import InputField from "../../components/Forms/InputField";
 import ButtonNew from "../../components/Forms/ButtonNew";
 import { Link, useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { AuthContext } from '../../context/authContext';
 const URL = "http://192.168.0.161:5000"
 
 
@@ -14,17 +15,11 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [user,setUser] = useContext(AuthContext);
 
   const navigation = useNavigation()
 
-  const showLocalStorageData = async() =>{
-    const data = await AsyncStorage.getItem("@auth");
-    console.log(data)
-  }
-
-  useEffect(()=>{
-    showLocalStorageData()
-  },[])
+ 
 
   const handleSubmit = async() => {
     
@@ -35,11 +30,12 @@ const Login = () => {
         setLoading(false);
         return;
       }
-      const res = await axios.post(`${URL}/auth/register`,{email,password})
+      const res = await axios.post(`${URL}/auth/login`,{email,password})
       console.log(res?.data)
+      setUser(res?.data)
       await AsyncStorage.setItem('@auth', JSON.stringify(res?.data));
       navigation.navigate("home",{screen : "home"})
-      // Alert.alert("Success", "You have successfully registered");
+      Alert.alert("Success", "You have successfully Logged in");
 
       setLoading(false);
     } catch (e) {
