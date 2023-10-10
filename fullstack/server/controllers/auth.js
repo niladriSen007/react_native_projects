@@ -110,3 +110,50 @@ export const LoginUser = async (req, res) => {
     });
   }
 };
+
+export const UpdateUser = async (req, res) => {
+  try {
+    const { name, email, password } = req?.body;
+    
+    let securedPass;
+
+    const userExistOrNot = await UserDetails.findOne({ email: email });
+
+    if(password)
+      securedPass = await hashedPassword(password);
+    else
+      securedPass = await hashedPassword(userExistOrNot?.password);
+    // console.log(req?.body)
+    // const { photo } = req.files;
+    //alidation
+    // switch (true) {
+    //   case !name:
+    //     return res.status(500).send({ error: "Name is Required" });
+    //   case !email:
+    //     return res.status(500).send({ error: "email is Required" });
+    // }
+
+
+
+    const newUser = await UserDetails.findByIdAndUpdate(
+      req?.params?.id,
+      { ...req?.body , password: securedPass },
+      { new: true }
+    );
+
+    // console.log(product)
+    await newUser.save();
+    res.status(201).send({
+      success: true,
+      message: "User data Updated Successfully",
+      newUser,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({
+      success: false,
+      message: "Error while updating user",
+      e,
+    });
+  }
+};

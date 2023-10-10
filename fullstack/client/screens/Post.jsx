@@ -7,7 +7,7 @@ import Footer from "./Menus/Footer";
 
 
 
-const About = () => {
+const Post = () => {
 
   return (
     <LinearGradient
@@ -20,7 +20,7 @@ const About = () => {
         <Header />
       </View>
 
-      <View style={tw` py-28 px-4  `}>
+      <View style={tw` py-32  `}>
         <Text style={tw`text-white`}>About</Text>
       </View>
      
@@ -31,4 +31,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Post;
