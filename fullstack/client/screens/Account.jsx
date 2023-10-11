@@ -1,17 +1,21 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useContext, useState } from "react";
 import tw from "twrnc";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "./Menus/Header";
 import Footer from "./Menus/Footer";
 import { AuthContext } from "../context/authContext";
+import InputField from "../components/Forms/InputField";
 
 const Account = () => {
   const [user, setUser] = useContext(AuthContext);
-  const [updatePopup, setUpdatePopup] = useState(true);
+  const [updatePopup, setUpdatePopup] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   console.log(user?.user);
-  const loggedinUser = user?.user?.userName;
+  const loggedinUser = user?.user;
 
   return (
     <LinearGradient
@@ -32,9 +36,11 @@ const Account = () => {
         />
         <View style={tw`flex flex-row items-center gap-2`}>
           <Text style={tw`text-3xl py-3 pb-1 font-bold text-white`}>
-            {loggedinUser}
+            {loggedinUser?.userName}
           </Text>
-          <Text style={tw`text-2xl`}>✏️</Text>
+          <TouchableOpacity onPress={() => setUpdatePopup(!updatePopup)}>
+            <Text style={tw`text-2xl`}>✏️</Text>
+          </TouchableOpacity>
         </View>
         <Text style={tw`text-2xl  text-white`}>Full Stack Developer</Text>
         <View style={tw`bg-white w-full absolute bottom-18 h-96`}>
@@ -69,12 +75,38 @@ const Account = () => {
             </View>
           </View>
         </View>
-        {updatePopup && (
-          <View style={tw`absolute bg-black w-32 h-32`}>
-            {" "}
-            <Text>HIIIIIIIIIIIIIIIIIIIIIIII</Text>{" "}
-          </View>
-        )}
+        <View style={tw`${updatePopup ? "w-full h-full bg-white" : ""}`}>
+          {updatePopup && (
+            <View
+              style={tw`absolute bg-blue-700 flex items-center justify-center w-[360px] h-80 top-8 left-4 px-6 `}
+            >
+              <TouchableOpacity
+                style={tw`absolute  z-50 top-2 right-4`}
+                onPress={() => setUpdatePopup(!updatePopup)}
+              >
+                <Text style={tw`text-white text-2xl `}>X</Text>
+              </TouchableOpacity>
+              <InputField
+                label={"Name"}
+                value={loggedinUser?.userName}
+                name={"name"}
+                setValue={setName}
+              />
+              <InputField
+                label={"Email"}
+                value={loggedinUser?.userEmail}
+                name={"email"}
+                setValue={setEmail}
+              />
+              <InputField
+                label={"Password"}
+                value={password}
+                name={"password"}
+                setValue={setPassword}
+              />
+            </View>
+          )}
+        </View>
       </View>
       <View style={tw`absolute bottom-0 w-full`}>
         <Footer />
