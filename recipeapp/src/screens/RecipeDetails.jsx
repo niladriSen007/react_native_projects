@@ -191,8 +191,8 @@ const getYoutubeVideoId = url=>{
                                     <View key={i} className="flex-row items-center gap-2">
                                         <View style={tw`bg-blue-700 rounded-full w-2 h-2`}/>
                                         <View className="flex-row space-x-2">
-                                                <Text style={tw`{font-extrabold text-lg text-blue-700`}>{recipeData['strMeasure'+i]}</Text>
-                                                <Text style={tw`{font-bold text-lg text-neutral-600`}>{recipeData['strIngredient'+i]}</Text>
+                                                <Text style={tw`font-extrabold text-lg text-blue-700`}>{recipeData['strMeasure'+i]}</Text>
+                                                <Text style={tw`font-bold text-lg text-neutral-600`}>{recipeData['strIngredient'+i]}</Text>
                                         </View>
                                     </View>
                                 )
